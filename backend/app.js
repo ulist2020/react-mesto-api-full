@@ -18,6 +18,12 @@ const auth = require('./middlewares/auth');
 const { validateSign } = require('./middlewares/validation');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', '*');
+  next();
+});
+
 // подключаемся к серверу mongo
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
