@@ -69,14 +69,16 @@ function App() {
   }
 
   useEffect(() => {
+
+
     api.getUser()
     .then((results) => {
       setCurrentUser(
         {
-          _id: results._id,
-          name: results.name,
-          about: results.about,
-          avatar: results.avatar
+          _id: results.data._id,
+          name: results.data.name,
+          about: results.data.about,
+          avatar: results.data.avatar
       })
     })
     .catch((err) => console.log(`Ошибка: ${err}`));
@@ -85,6 +87,7 @@ function App() {
   useEffect(() => {
     api.getInitialCards()
     .then((results) => {
+
       setCards(results)
     })
     .catch((err) => console.log(`Ошибка: ${err}`));
@@ -92,11 +95,11 @@ function App() {
       
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+  const isLiked = card.likes.some(i => i === currentUser._id);
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api.changeLikeCardStatus(card._id, !isLiked)
     .then((newCard) => {
-        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        setCards((state) => state.map((c) => c._id === card._id ? newCard.data : c));
     })
     .catch((err) => console.log(`Ошибка: ${err}`));  
   }
@@ -125,6 +128,7 @@ function App() {
   function handleUpdateAvatar(currentUser) {
     api.editAvatar(currentUser)
       .then((results) =>{
+        console.log(currentUser)
         setCurrentUser(results);
         closeAllPopups()
       })
@@ -134,7 +138,7 @@ function App() {
   function handleUpdateCards(currentUser) {
     api.addCard(currentUser)
       .then((results) =>{
-        setCards([results, ...cards]);;
+        setCards([results.card, ...cards]);;
         closeAllPopups()
       })
       .catch((err) => console.log(`Ошибка: ${err}`));

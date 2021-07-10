@@ -2,9 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 require('dotenv').config();
+const cors = require('cors');
 
-// Слушаем 3000 порт
-const { PORT = 3000 } = process.env;
+const { PORT = 5000 } = process.env;
 
 const bodyParser = require('body-parser');
 
@@ -27,6 +27,25 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+const allowedCors = [
+  'https://mesto.student.project.nomoredomains.club',
+  'http://mesto.student.project.nomoredomains.club',
+  'http://localhost:3000',
+];
+
+app.use(cors());
+
+app.use((req, res, next) => {
+  const { origin } = req.headers;
+  if (allowedCors.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Credentials', true);
+  }
+  next();
+});
+
+app.options('*', cors());
 
 app.use(requestLogger);
 

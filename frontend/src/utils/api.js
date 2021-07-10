@@ -1,3 +1,4 @@
+
  class Api {
     constructor({address, token, format}) {
         this._address = address;
@@ -9,7 +10,8 @@
     getUser(){
         return fetch(`${this._address}/users/me`, {
             headers: {
-                authorization: this._token,
+                Authorization: this._token,
+                Accept: "application/json",
                 'Content-Type': this._format
             }
         })
@@ -20,7 +22,8 @@
     getInitialCards() {
         return fetch(`${this._address}/cards`, {
             headers: {
-                authorization: this._token,
+                Authorization: this._token,
+                Accept: "application/json",
                 'Content-Type': this._format
             }
         })
@@ -32,7 +35,8 @@
         return fetch(`${this._address}/users/me`, {
             method: 'PATCH',
             headers: {
-                authorization: this._token,
+                Authorization: this._token,
+                Accept: "application/json",
                 'Content-Type': this._format
             },
             body: JSON.stringify({
@@ -49,7 +53,7 @@
         return fetch(`${this._address}/users/me/avatar`, {
             method: 'PATCH',
             headers: {
-                authorization: this._token,
+                'Authorization': this._token,
                 'Content-Type': this._format
             },
             body: JSON.stringify({
@@ -65,7 +69,7 @@
         return fetch(`${this._address}/cards`, {
             method: 'POST',
             headers: {
-                authorization: this._token,
+                'Authorization': this._token,
                 'Content-Type': this._format
             },
             body: JSON.stringify({
@@ -81,7 +85,7 @@
         return fetch(`${this._address}/cards/${data._id}`, {
                 method: 'DELETE',
                 headers: {
-                    authorization: this._token,
+                    'Authorization': this._token,
                     'Content-Type': this._format
                 },
         })
@@ -91,22 +95,23 @@
 
     //Добавление лайка
     addLike(id){
-        return fetch(`${this._address}/cards/likes/${id}`, {
+        return fetch(`${this._address}/cards/${id}/likes`, {
                 method: 'PUT',
                 headers: {
-                    authorization: this._token,
+                    'Authorization': this._token,
                     'Content-Type': this._format
                 },
+                
         })
         .then(this._checkResponse)
     }
 
     //Удаление лайка
     removeLike(id){
-        return fetch(`${this._address}/cards/likes/${id}`, {
+        return fetch(`${this._address}/cards/${id}/likes`, {
                 method: 'DELETE',
                 headers: {
-                    authorization: this._token,
+                    'Authorization': this._token,
                     'Content-Type': this._format
                 },
         })
@@ -132,11 +137,12 @@
 }
 
 const api = new Api({
-    address: 'https://mesto.nomoreparties.co/v1/cohort-22',
-    token: 'fd83089e-563a-4f6d-a7ca-57bbc8360c89',
+    address: 'http://localhost:5000',
+    token: `Bearer ${localStorage.getItem('jwt')}`,
+    //token: 'fd83089e-563a-4f6d-a7ca-57bbc8360c89',
     format: 'application/json'
   }); 
-
+  
   export default api;
 
     

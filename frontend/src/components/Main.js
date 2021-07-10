@@ -4,7 +4,6 @@ import Card from './Card';
 
 function Main(props) {
   const currentUser = React.useContext(CurrentUserContext);
-      
   return (
     <main className="content">
     <section className="profile">
