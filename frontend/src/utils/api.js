@@ -137,7 +137,7 @@
 }
 
 const api = new Api({
-    address: 'api.mesto.student.project.nomoredomains.club',
+    address: 'http://api.mesto.student.project.nomoredomains.club',
     token: `Bearer ${localStorage.getItem('jwt')}`,
     //token: 'fd83089e-563a-4f6d-a7ca-57bbc8360c89',
     format: 'application/json'
