@@ -28,23 +28,20 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const allowedCors = [
-  'https://mesto.student.project.nomoredomains.club',
-  'http://mesto.student.project.nomoredomains.club',
-  'http://localhost:3000',
-];
-
 app.use(cors());
 
 app.use((req, res, next) => {
-  const { origin } = req.headers;
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', '*');
+  res.header(
+    'Access-Control-Allow-Methods',
+    'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  );
+  if (req.method === 'OPTIONS') {
+    res.send(200);
   }
   next();
 });
-
 app.options('*', cors());
 
 app.use(requestLogger);
