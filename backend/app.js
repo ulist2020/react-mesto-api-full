@@ -9,6 +9,7 @@ const { PORT = 5000 } = process.env;
 const bodyParser = require('body-parser');
 
 const app = express();
+app.use(cors());
 
 const { createUser, login } = require('./controllers/users');
 const usersRoutes = require('./routes/users');
@@ -27,10 +28,6 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(cors({
-  origin: 'https://mesto.student.project.nomoredomains.club',
-}));
 
 app.use(requestLogger);
 
