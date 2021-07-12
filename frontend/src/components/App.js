@@ -118,7 +118,7 @@ function App() {
   function handleUpdateUser(currentUser) {
     api.editUser(currentUser)
       .then((results) =>{
-        setCurrentUser(results.data);
+        setCurrentUser(results);
         closeAllPopups()
       })
       .catch((err) => console.log(`Ошибка: ${err}`));
@@ -128,7 +128,7 @@ function App() {
   function handleUpdateAvatar(currentUser) {
     api.editAvatar(currentUser)
       .then((results) =>{
-        setCurrentUser(results.data);
+        setCurrentUser(results);
         closeAllPopups()
       })
       .catch((err) => console.log(`Ошибка: ${err}`));

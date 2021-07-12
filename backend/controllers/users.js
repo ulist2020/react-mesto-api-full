@@ -79,27 +79,20 @@ module.exports.createUser = (req, res, next) => {
 
 module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
-  if (
-    !name || name.length < 2 || name.length > 30
-    || !about || about.length < 2 || about.length > 30
-  ) {
-    throw new BadRequestError('Переданы некорректные данные при обновлении профиля');
-  } else {
-    User.findByIdAndUpdate(req.user._id, { name, about })
-      .then((user) => {
-        if (!user) {
-          throw new NotFoundError('Пользователь не найден');
-        }
-        res.status(200).send({ data: user });
-      })
-      .catch((err) => {
-        if (err.name === 'CastError') {
-          throw new BadRequestError('Переданы некорректные данные при обновлении профиля');
-        }
-        next(err);
-      })
-      .catch(next);
-  }
+  User.findByIdAndUpdate(req.user._id, { name, about })
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Пользователь не найден');
+      }
+      res.status(200).send(user);
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        throw new BadRequestError('Переданы некорректные данные при обновлении профиля');
+      }
+      next(err);
+    })
+    .catch(next);
 };
 
 module.exports.updateAvatar = (req, res, next) => {
@@ -112,7 +105,7 @@ module.exports.updateAvatar = (req, res, next) => {
         if (!user) {
           throw new NotFoundError('Пользователь не найден');
         }
-        res.status(200).send({ data: user });
+        res.status(200).send(user);
       })
       .catch((err) => {
         if (err.name === 'CastError') {
@@ -130,7 +123,7 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       // создадим токен
-      const token = jwt.sign({ _id: user._id }, NODE_ENV !== 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV !== 'production' ? JWT_SECRET : 'some-secret-key', { expiresIn: '7d' });
       // вернём токен
       res.send({ token });
     })
