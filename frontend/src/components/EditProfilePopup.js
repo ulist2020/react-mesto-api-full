@@ -11,8 +11,8 @@ function EditProfilePopup(props) {
     // После загрузки текущего пользователя из API
     // его данные будут использованы в управляемых компонентах.
     useEffect(() => {
-    setName(currentUser.name);
-    setDescription(currentUser.about);
+    setName(currentUser.data.name);
+    setDescription(currentUser.data.about);
     }, [currentUser, props.isOpen]);
 
     function handleChangeName(e) {
