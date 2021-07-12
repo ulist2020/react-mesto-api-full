@@ -2,12 +2,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 require('dotenv').config();
+const cors = require('cors');
 
 const { PORT = 3000 } = process.env;
 
 const bodyParser = require('body-parser');
 
 const app = express();
+app.use(cors());
 
 const { createUser, login } = require('./controllers/users');
 const usersRoutes = require('./routes/users');
