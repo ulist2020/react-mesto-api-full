@@ -79,7 +79,7 @@ module.exports.createUser = (req, res, next) => {
 
 module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about })
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
@@ -100,7 +100,7 @@ module.exports.updateAvatar = (req, res, next) => {
   if (!avatar) {
     res.status(404).send({ message: 'Переданы некорректные данные при обновлении аватара' });
   } else {
-    User.findByIdAndUpdate(req.user._id, { avatar })
+    User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
       .then((user) => {
         if (!user) {
           throw new NotFoundError('Пользователь не найден');

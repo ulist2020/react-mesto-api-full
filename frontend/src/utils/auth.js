@@ -1,4 +1,5 @@
 export const BASE_URL = 'http://api.mesto.student.project.nomoredomains.club';
+//export const BASE_URL = 'http://localhost:5000';
 
 const checkResponse =(res) => {
   if (res.ok) {
