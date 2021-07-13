@@ -5,15 +5,16 @@ const Forbidden = require('../errors/forbidden-error');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .populate('owner')
+    .populate('user')
     .then((cards) => res.status(200).send(cards))
     .catch(next);
 };
 
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
+  console.log(req.user);
   Card.create({ name, link, owner: req.user._id })
-    .then((card) => { res.status(200).send({ card }); })
+    .then((card) => res.status(200).send({ card }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new BadRequestError('Переданы некорректные данные при создании карточки');
