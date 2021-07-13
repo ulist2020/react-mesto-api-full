@@ -79,7 +79,7 @@ module.exports.createUser = (req, res, next) => {
 
 module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
@@ -87,7 +87,7 @@ module.exports.updateUser = (req, res, next) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'CastError' || err.name === 'ValidationError') {
         throw new BadRequestError('Переданы некорректные данные при обновлении профиля');
       }
       next(err);
@@ -97,24 +97,20 @@ module.exports.updateUser = (req, res, next) => {
 
 module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
-  if (!avatar) {
-    res.status(404).send({ message: 'Переданы некорректные данные при обновлении аватара' });
-  } else {
-    User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
-      .then((user) => {
-        if (!user) {
-          throw new NotFoundError('Пользователь не найден');
-        }
-        res.status(200).send(user);
-      })
-      .catch((err) => {
-        if (err.name === 'CastError') {
-          throw new BadRequestError('Переданы некорректные данные при обновлении аватара');
-        }
-        next(err);
-      })
-      .catch(next);
-  }
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Пользователь не найден');
+      }
+      res.status(200).send(user);
+    })
+    .catch((err) => {
+      if (err.name === 'CastError' || err.name === 'ValidationError') {
+        throw new BadRequestError('Переданы некорректные данные при обновлении аватара');
+      }
+      next(err);
+    })
+    .catch(next);
 };
 
 module.exports.login = (req, res, next) => {

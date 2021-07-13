@@ -12,7 +12,7 @@ const validateUser = celebrate({
 
 const validateAvatar = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().uri().custom((value, helper) => {
+    avatar: Joi.string().required().uri().custom((value, helper) => {
       if (!value.match(url)) {
         return helper.message('Invalid value');
       }
@@ -48,6 +48,20 @@ const validateSign = celebrate({
     password: Joi.string().required().min(8),
   }),
 });
+const validateUserRegister = celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().uri().custom((value, helper) => {
+      if (!value.match(url)) {
+        return helper.message('Invalid value');
+      }
+      return value;
+    }),
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+});
 
 module.exports = {
   validateUser,
@@ -56,4 +70,5 @@ module.exports = {
   validateIdCard,
   validateId,
   validateSign,
+  validateUserRegister,
 };

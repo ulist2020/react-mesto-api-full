@@ -14,8 +14,9 @@ const { createUser, login } = require('./controllers/users');
 const usersRoutes = require('./routes/users');
 const cardsRoutes = require('./routes/cards');
 const auth = require('./middlewares/auth');
-const { validateSign } = require('./middlewares/validation');
+const { validateSign, validateUserRegister } = require('./middlewares/validation');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const NotFoundError = require('./errors/not-found-error');
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -42,14 +43,14 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post('/signup', validateSign, createUser);
+app.post('/signup', validateUserRegister, createUser);
 app.post('/signin', validateSign, login);
 
 app.use('/', auth, usersRoutes);
 app.use('/', auth, cardsRoutes);
 
-app.use('/', (req, res) => {
-  res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
+app.use('/', () => {
+  throw new NotFoundError('Запрашиваемый ресурс не найден');
 });
 
 app.use(errorLogger);
