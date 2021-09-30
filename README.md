@@ -1,6 +1,8 @@
 # Проектная работа 15: Место 
 ------
-_Ссылка на проект http://mesto.ulist.project-hub.ru_  
+_Ссылка на проект http://mesto.ulist.project-hub.ru  
+Ссылка на макет https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1  
+                https://www.figma.com/file/PSdQFRHoxXJFs2FH8IXViF/JavaScript.-Sprint-9?node-id=0%3A1_  
 
 Репозиторий для приложения проекта Mesto, включающий фронтенд и бэкенд части приложения со следующими возможностями: авторизации и регистрации пользователей, операции с карточками и пользователями. Бэкенд расположен в директории backend/, а фронтенд - в frontend/.  
 
